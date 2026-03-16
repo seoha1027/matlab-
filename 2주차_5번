@@ -1,0 +1,16 @@
+x = 0:0.01:2;
+
+u = 3*log10(70*x + 1);
+v = 4*cos(7*x);
+
+plot(x,u,'r','LineWidth',2)
+hold on
+plot(x,v,'b','LineWidth',2)
+
+xlabel('Distance x (mile)')
+ylabel('Speed (mile/hour)')
+title('u = 3log_{10}(70x+1)  and  v = 4cos(7x)')
+grid on
+
+text(1.2,3,'u = 3log_{10}(70x+1)')
+text(1.2,-3,'v = 4cos(7x)')
