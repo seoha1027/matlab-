@@ -1,0 +1,110 @@
+1번
+fplot(@ksh_25011982_func_1, [0 4], 'LineWidth', 2);
+grid on; hold on;
+xlabel('x'); ylabel('f(x)');
+title('1번 그래프 : f(x) = 0.3x - sin(2x)');
+%근 구하기
+r1 = fzero(@ksh_25011982_func_1, 0);
+r2 = fzero(@ksh_25011982_func_1, 1.4);
+fprintf('r1 = %.4f, r2 = %.4f\n', r1, r2);
+%최솟값 구하기
+
+[x_min, f_min] = fminbnd(@ksh_25011982_func_1, 0, 4);
+fprintf('최솟값: x = %.4f 에서 f = %.4f\n', x_min, f_min);
+%그래프가 구간 내에서 하나의 극소점만 가지므로 구한 값은 전역에서 최솟값
+plot(x_min, f_min, 'ro')
+legend('f(x)', 'minimum')
+
+2번
+h = 100;
+v0 = 50;
+g = 9.81;
+t_result = ksh_25011982_func_2(h, v0, g);
+fprintf("\n");
+fprintf("t1 = %.4f sec\n", t_result(1));%상승하면서 h에 도달할 때의 시간
+fprintf("t2 = %.4f sec\n", t_result(2));%하강 중 다시 h에 도달할 때의 시간
+
+3번
+global V
+V = 10; % in^3
+
+%(b) 함수 확인
+r_test = 1;
+A_test = ksh_25011982_func_3(r_test);
+fprintf("\n");
+fprintf("r=1일 때 A = %.4f\n", A_test);
+
+%(c) 최소 면적 및 최적 치수 계산
+r_opt = fminbnd(@ksh_25011982_func_3, 0.1, 5);
+A_min = ksh_25011982_func_3(r_opt);
+h_opt = 3*V/(pi*r_opt^2);
+
+fprintf("\n");
+fprintf("최적 반지름 r = %.4f in\n", r_opt);
+fprintf("최적 높이 h = %.4f in\n", h_opt);
+fprintf("최소 면적 A = %.4f in^2\n", A_min);
+
+%% 그래프 작성 및 민감도 조사
+r_vec = linspace(0.1, 5, 1000); 
+A_vec = ksh_25011982_func_3(r_vec);
+
+figure;
+plot(r_vec, A_vec, 'LineWidth', 2); grid on; hold on;
+plot(r_opt, A_min, 'ro');
+xlabel('r (in)'); ylabel('A (in^2)');
+title('3번 그래프 :  반지름 r에 대한 표면적 A의 그래프');
+legend('A(r)', 'Minimum');
+
+%면적 10% 증가 범위 계산
+A_10 = 1.1 * A_min;
+idx = find(A_vec <= A_10);
+
+r_left = r_vec(idx(1));
+r_right = r_vec(idx(end));
+
+
+fprintf("\n민감도 조사 결과\n");
+fprintf('민감도: 면적 10% 증가 범위는 r이 최적값에서 -%.4f, +%.4f 이내임\n', ...
+    r_opt - r_left, r_right - r_opt);
+
+4번
+figure;
+f4 = @(x) 10*exp(-2*x);
+fplot(f4, [0 2], 'LineWidth', 2);
+grid on;
+xlabel('x');
+ylabel('f(x) = 10e^-2x');
+title('4번 그래프 : 익명함수를 이용한 지수 함수 그래프')
+
+5번
+figure;
+f5 = @(x) 30.*x.^2 - 300.*x +4;
+fplot(f5, [0 15], 'LineWidth',2);
+grid on;
+xlabel('x');
+ylabel('f(x)');
+title('5번 : 30x^2 - 300x + 4')
+%최솟값 구하기
+[xmin, fmin] = fminbnd(f5, 0, 15);
+
+fprintf("\n");
+fprintf("xmin = %.4f\n", xmin);
+fprintf("fmin = %.4f\n", fmin);
+
+hold on
+plot(xmin, fmin, 'ro')
+legend('f(x)', 'minimum')
+
+6번
+h = @(z) 6*exp(z);
+g = @(y) 3 * cos(y);
+f = @(x) x.^2;
+
+f6 = @(x) h(g(f(x)));
+figure;
+fplot(f6, [0 4], 'LineWidth', 2);
+grid on;
+xlabel('x');
+ylabel('6e^{3cos(x^2)}');
+title('6번 합성 익명 함수 그래프');
+
