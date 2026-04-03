@@ -1,0 +1,17 @@
+name = input('학생의 이름을 입력하세요: ', 's');
+score = input('국어, 영어, 수학 점수를 벡터로 입력하세요: ');
+average = mean(score);
+
+fprintf('이름 : %s\n', name);
+fprintf('세 과목 점수 : %d %d %d\n', score(1), score(2), score(3));
+fprintf('평균 : %.2f\n', average);
+if average >= 90
+    disp('Excellent');
+elseif average >= 80
+    disp('Good');
+elseif average >= 70
+    disp('Fair');
+else
+    disp('Needs Improvement');
+end
+
