@@ -1,0 +1,14 @@
+applicants = [165 72 1; 172 85 0; 168 91 1; 181 77 1; 174 69 0;
+    169 88 1];
+
+h_70 = applicants(:,1) >= 170;
+s_80 = applicants(:, 2) >= 80;
+i_pass = applicants(:, 3) == 1;
+
+final_idx = find(h_70 & s_80 & i_pass);
+
+final = [final_idx, applicants(final_idx, :)];
+
+disp('최종 합격자의 정보(행번호, 키, 점수, 면접여부) :');
+disp(final);
+%조건을 만족하는 최종합격자가 존재하지 않음
