@@ -1,0 +1,149 @@
+1번
+fprintf('1번\n')
+
+x = input('x = ');
+if x > 0
+    y = x^2;
+else
+    y = 0;
+end
+
+y
+
+2번
+fprintf('2번\n')
+
+m = input('1에서 4 사이의 정수 m을 입력하세요 : ');
+switch m
+    case 1
+        disp('January')
+    case 2
+        disp('February')
+    case 3
+        disp('March')
+    case 4
+        disp('April')
+    otherwise
+        disp('invalid month')
+end
+
+
+
+
+3번
+fprintf('3번\n')
+
+x = [3, -5, 0, 8, -2, 4, -7];
+count = 0;
+for i = 1:length(x)
+    if x(i) <0 
+        count = count+1;
+    end
+end
+count
+
+4번
+fprintf('4번\n')
+
+x = [4, -9, 0, 16, -1, 25];
+y = zeros(1, length(x));
+for i = 1:length(x)
+    if x(i) > 0
+        y(i) = x(i).^2;
+    elseif x(i) == 0
+        y(i) = x(i);
+    else
+        y(i) = abs(x(i));
+    end
+end
+y
+
+5번
+fprintf('5번\n')
+
+a = input('a = ');
+b = input('b = ');
+cmd = input('cmd = ', 's');
+switch cmd
+    case 'add'
+        result = a + b;
+    case 'sub'
+        result = a-b;
+    case 'mul'
+        result = a*b;
+    case 'div'
+        result = a/b;
+    otherwise
+        result = 'invalid command';
+end
+result
+
+6번
+fprintf('6번\n')
+
+N = input('N = ');
+sumN = 0;
+for i = 1:N
+    if rem(i,3) == 0 && rem(i,2) ~= 0
+        sumN = sumN + i;
+    end
+end
+sumN
+
+7번
+fprintf('7번\n')
+
+N = input('N = ');
+a = zeros(1, N);
+for k = 1:N
+    if rem(k,2) ~= 0
+        a(k) = k.^2;
+    else
+        a(k) = k.^3;
+    end
+end
+a
+
+8번
+fprintf('8번\n')
+
+price = [19, 18, 22, 21, 25, 19, 17, 21, 27, 29];
+share = 1000;
+consume = 0;
+income = 0;
+for i= 1: 10
+    if price(i) < 20
+        share = share+100;
+        consume = consume + price(i)*100;
+    elseif price(i) > 25
+        share = share-100;
+        income = income + price(i)*100;
+    end
+end
+initial_value = 1000*price(1);
+final_value = (share*price(10)) + income - consume;
+increase = final_value - initial_value;
+
+fprintf('(a) 주식을 사는 데 소비한 금액 : %d\n',consume)
+fprintf('(b) 주식을 팔아서 얻어진 금액 : %d\n', income)
+fprintf('(c) 10일째가 지난 후에 보유하고 있는 주식의 수 : %d\n', share)
+fprintf('(d) 총 가치의 증가분 : %d', increase);
+
+9번
+fprintf('9번\n')
+
+form = input('form = ','s');
+n = input('저항의 개수 = ');
+R = input('R(ex. [10, 20, 30] 형태로 입력하세요.) = ');
+result_R = 0;
+if strcmp(form, '직렬')
+    for i = 1:length(R)
+        result_R = result_R + R(i);
+    end
+elseif strcmp(form, '병렬')
+    for i = 1:length(R)
+        result_R = result_R + 1/R(i);
+    end
+    result_R = 1/result_R;
+end
+result_R
