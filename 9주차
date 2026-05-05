@@ -1,0 +1,291 @@
+1번
+figure;
+x = 0:0.05:6*pi;
+y = sin(x) + 0.5*cos(3*x);
+plot(x,y)
+xticks(0:pi:6*pi)
+xticklabels({'0','\pi','2\pi','3\pi','4\pi','5\pi','6\pi'})
+grid on
+
+title('1번 그래프')
+xlabel('x')
+ylabel('y')
+
+2번
+clear; clc;
+figure;
+x = 1:1:50;
+y = 3.^x;
+subplot(1,2,1)
+plot(x,y)
+xlabel('x')
+ylabel('y')
+title('2번 y = 3^x 그래프')
+grid on
+subplot(1,2,2)
+semilogy(x,y)
+title('2번 y = 3^x semilogy 그래프')
+xlabel('x')
+ylabel('y')
+grid on
+
+plot은 y축이 선형 스케일이라 값이 급격히 커지면서 그래프가 위쪽으로 거의 붙어 보인다. 
+semilogy는 y축이 로그 스케일이라 지수함수가 직선 형태로 나타난다. 
+따라서 지수 증가를 분석할 때는 semilogy가 변화 추이를 보기 훨씬 좋다.
+
+3번
+clear; clc;
+figure;
+score = [72, 85, 91, 66, 78, 88, 95, 54, 60, 73, 82, 90, 69, 77, 84, 92, 58, 63, 79, 87];
+save('score.dat', 'score', '-ascii');
+
+data = load('score.dat');
+subplot(1,2,1)
+histogram(data, 5)
+title('3번 Histogram 5구간')
+grid on
+subplot(1,2,2)
+histogram(data, 10)
+title('3번 Histogram 10구간')
+
+4번
+clear; clc;
+figure;
+fplot(@(x)sin(x).*exp(-0.1*x), [0, 10*pi])
+title('4번 그래프')
+xlabel('x축')
+ylabel('y축')
+grid on
+
+5번
+clear; clc;
+figure;
+x= 0:0.1:10;
+y1 = x.^2;
+y2 = exp(0.5*x);
+plotyy(x,y1,x,y2)
+title('5번 그래프')
+xlabel('x축')
+grid on
+x^2는 다항식 형태로 증가하지만
+ e^(0.5x)는 지수적으로 증가하여 훨씬 빠르게 커진다.
+
+6번
+clear; clc;
+figure;
+t = 0:0.02:12*pi;
+x = (1+0.03*t).*cos(t);
+y = (1+0.03*t).*sin(t);
+z = 0.2*t;
+plot3(x, y, z)
+grid on
+title('6번 3차원 그래프')
+xlabel('x축')
+ylabel('y축')
+zlabel('z축')
+
+
+7번
+clear; clc;
+figure;
+x = -4:0.01:4; y = -4:0.01:4;
+[X,Y] = meshgrid(x,y);
+Z = X.^2 - Y.^2;
+mesh(X,Y,Z);
+grid on
+title('7번 mesh 그래프')
+xlabel('x축')
+ylabel('y축')
+zlabel('z축')
+z = x^2 - y^2는 x 방향으로는 위로 열린 포물선 형태이고,
+y 방향으로는 아래로 열린 포물선 형태이다.
+이로 인해 전체 그래프는 안장(saddle) 모양의 곡면이 된다.
+
+8번
+clear; clc;
+
+figure;
+
+x = -2*pi:0.01:2*pi;
+y = -2*pi:0.01:2*pi;
+[X, Y] = meshgrid(x,y);
+Z = sin(X).*cos(Y);
+
+subplot(1,2,1)
+mesh(X,Y,Z)
+xlabel('X'); ylabel('Y'); zlabel('Z');
+title('8번 mesh 그래프')
+grid on
+subplot(1,2,2)
+contour(X,Y,Z)
+title('8번 contour 그래프')
+xlabel('X'); ylabel('Y'); 
+grid on
+contour 그래프는 같은 z값을 가지는 점들을 선으로 연결한 등고선 그래프이다.
+이를 통해 함수의 높이 변화와 패턴을 평면에서 쉽게 확인할 수 있다.
+
+9번
+clear; clc;
+figure;
+t = 0:0.01:25;
+y = exp(-0.15*t).*cos(4*t);
+%(a)
+plot(t,y)
+title('9번 y(t) 그래프')
+hold on
+%(b)
+plot(t, exp(-0.15*t), '-r')
+plot(t, -exp(-0.15*t),'-y')
+title('9번 envelope 그래프')
+grid on
+figure;
+%(c)
+semilogy(t, abs(y))
+title('9번 semilogy 절대값 y(t) 그래프')
+grid on
+|y(t)|를 semilogy로 나타내면 전체적인 감쇠 envelope이 직선 형태로 나타난다.
+이는 지수함수가 로그 스케일에서 선형적으로 표현되기 때문이다.
+cos 함수의 영향으로 값이 0에 가까워지는 지점에서는 그래프가 급격히 떨어져 보인다.
+
+10번
+clear; clc;
+figure;
+%(a)
+x= -6:0.01:6; y = -6:0.01:6;
+[X,Y]= meshgrid(x,y);
+Z = cos(X).*sin(Y).*exp(-0.05*(X.^2+Y.^2));
+mesh(X,Y,Z);
+xlabel('X'); ylabel('Y'); zlabel('Z');
+title('10번 mesh 그래프')
+%(b)
+figure;
+contour(X,Y,Z);
+xlabel('X'); ylabel('Y'); 
+title('10번 contour 그래프')
+%(c)
+[max_z, idx] = max(Z(:));
+max_x = X(idx);
+max_y = Y(idx);
+disp(max_z)
+disp([max_x, max_y])
+
+11번
+clear; clc; 
+figure;
+
+t = [0,1,2,3,4,5,6];
+C = [12, 8.9,6.6,4.9,3.6,2.7,2.0];
+plot(t, C, 'o-')
+title('11번 데이터')
+figure;
+semilogy(t, C)
+title('11번 semilogy 그래프')
+p = polyfit(t, log(C), 1);
+k = -p(1);
+disp(k)
+C(t)는 지수적으로 감소하는 함수이므로 semilogy 그래프에서 직선 형태로 나타난다.
+log C(t) = log C0 - kt 관계를 이용하여 직선의 기울기로부터 k를 추정할 수 있다.
+
+12번
+clear; clc; 
+figure;
+
+n = 1:1:30;
+T1 = n;
+T2 = n.*log(n);
+T3 = n.^2;
+T4 = 2.^n;
+%(a)
+plot(n,T1,n,T2,n,T3,n,T4)
+title('12번 (a) 그래프')
+legend('n','n log n','n^2','2^n')
+grid on
+figure;
+%(b)
+semilogy(n,T1,n,T2,n,T3,n,T4)
+title('12번 (b) semilogy 그래프')
+c. 일반 plot에서는 2^n 함수가 매우 빠르게 증가하여 다른 함수들의 차이를 비교하기 어렵다.
+semilogy에서는 y축이 로그 스케일이므로 각 함수의 증가율 차이를 더 명확하게 비교할 수 있다.
+특히 지수 함수는 직선 형태로 나타나며, 다른 함수들과의 성장 차이를 쉽게 확인할 수 있다.
+
+16번
+clear; clc;
+figure;
+t = 0:0.01:24;
+T = 15+10*sin(pi*t/12);
+plot(t, T);
+hold on;
+[max_T, idx_max] = max(T);
+[min_T, idx_min] = min(T);
+t_max = t(idx_max);
+t_min = t(idx_min);
+plot(t_max, max_T, 'ro')
+plot(t_min, min_T, 'yo')
+title('16번 온도변화 그래프')
+grid on
+
+17번
+clear; clc;
+figure;
+t = 0:0.01:20;
+v = 5*exp(-0.2*t);
+%(1)
+plot(t,v)
+title('17번 속도 그래프')
+figure;
+%(2)
+semilogy(t,v)
+title('17번 semilogy 그래프')
+ 일반 plot에서는 속도가 시간이 지남에 따라 지수적으로 감소하는 곡선 형태로 나타난다.
+semilogy에서는 y축이 로그 스케일이므로 지수 감소가 직선 형태로 나타난다.
+따라서 로그 스케일에서는 감소율을 더 명확하게 확인할 수 있다.
+
+18번
+A = [4 -1 2;1 3 -1;2 -2 5];
+b = [7;4;10];
+%(a)
+A^2
+A.^2
+(a) A^2는 행렬 곱을 의미하고 A.^2는 각 원소를 제곱한 것이다.
+%(b)
+det(A)
+(b) det(A)가 0이 아니면 역행렬이 존재한다.
+%(c)
+inv(A)*b
+A\b
+(c) inv(A)*b와 A\b는 같은 해를 구하지만, A\b가 더 정확하고 효율적이다.
+%(d)
+A\b
+(d) 선형방정식 Ax = b의 해는 A\b를 이용하여 구할 수 있다.
+
+19번
+A = [2 -1;3 4]; B = [1 0 -2;3 5 1]; C = [6 -3 4;15 14 -1];
+%(a)
+AX = C - B;
+%(b)
+X = A\(C-B)
+%(c)
+A*X + B
+C
+(c) 계산한 X를 대입하여 AX + B가 C와 같음을 확인할 수 있다.
+(d) inv(A)*(C-B) 대신 A\(C-B)를 사용하는 이유는 수치적으로 더 안정적이고 계산 속도가 빠르기 때문이다.
+
+20번
+clear; clc;
+
+X = [3 7 2 5;
+     5 9 4 6;
+     8 12 7 10;
+     10 15 9 13;
+     14 18 12 16];
+
+%(a) 평균
+m = mean(X)
+
+%(b) 중심화
+Xc = X - m
+
+%(c) S 계산
+S = Xc' * Xc
+d. S의 대각원소는 각 변수의 분산을 나타내며 데이터의 퍼짐 정도를 의미한다.
+비대각원소는 변수 간 공분산으로, 두 변수의 상관관계를 나타낸다.
