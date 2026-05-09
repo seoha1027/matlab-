@@ -1,0 +1,280 @@
+1번
+clear; clc; 
+t = 0:0.01:30;
+%(a)
+f = exp(-0.12*t).*sin(5*t) + 0.3.*cos(2*t);
+plot(t,f)
+hold on
+%(b)
+u = exp(-0.12*t) + 0.3;
+l = -exp(-0.12*t)- 0.3;
+plot(t,u,'r-')
+plot(t, l,'b-')
+legend('f(t)', 'u(t)', 'l(t)');
+title('1번 그래프')
+xlabel('t');
+ylabel('f(t)');
+%(c)
+idx = find(f(2:end-1) > f(1:end-2) & f(2:end-1) > f(3:end)) + 1;
+%(d)
+plot(t(idx), f(idx), 'yo')
+%(e)
+result = table(t(idx)', f(idx)', 'VariableNames', {'t_value', 'f_value'});
+disp(result)
+
+2번
+clear; clc;
+figure;
+x = -5:0.05:5; y = -5:0.05:5;
+%(a)
+[X,Y] = meshgrid(x,y);
+Z = sin(X.*Y)./(1+X.^2+Y.^2);
+%(b)
+mesh(X,Y,Z)
+title('2번 mesh 그래프')
+xlabel('x')
+ylabel('y')
+zlabel('z')
+figure;
+%(c)
+contour(X,Y,Z,25)
+title('2번 contour 그래프')
+xlabel('x')
+ylabel('y')
+%(d)
+max_val = max(abs(Z(:)));
+fprintf('절대값 Z의 최대값 : %.4f\n', max_val)
+%(e)
+idx = find(abs(Z) == max_val);
+[row,col] = ind2sub(size(Z), idx);
+for k = 1: length(row)
+    x_pos = X(row(k),col(k));
+    y_pos = Y(row(k), col(k));
+
+    fprintf('x = %.2f, y = %.2f\n', x_pos, y_pos);
+end
+
+3번
+clear; clc;
+A = [7 2 1;2 6 -2;1 -2 5];
+%(a)
+[V,D] = eig(A)
+%(b)
+eig_values = diag(D)
+%(c)
+[lambda, idx] = max(diag(D))
+%(d)
+v = V(:, idx)
+%(e)
+v_unit = v / norm(v)
+%(f)
+check = A*v - lambda*v
+%영벡터에 가까운지 확인 : 0에 가까우므로 영벡터에 가까움
+
+4번
+clear; clc;
+X = [2 5 1;4 8 3;6 11 7;9 15 10;13 20 14];
+%(a)
+col_mean = mean(X)
+%(b)
+Xc = X - mean(X)
+%(c)
+S = Xc'*Xc
+%(d)
+eig_S = eig(S)
+%(e)
+[max_eig, max_idx] = max(eig(S));
+disp(max_eig)
+%(f)
+[V, D] = eig(S);
+max_eig_vector = V(:, max_idx)
+
+5번
+clear; clc;
+%(a)
+A = [5 2 -1;-2 6 3;1 -1 7];
+b = [8;5 ;12];
+%(b)
+x1 = inv(A)*b
+%(c)
+x2 = A\b
+%(d)
+diff = x1-x2
+%부동 소수점 연산에 의한 미세한 오차이므로 사실상 같은 값
+%(e)
+det_A = det(A)
+%결과가 0이 아니므로 해가 유일하게 존재한다.
+
+6번
+clear; clc;
+figure;
+x = -6:0.05:6; y = -6:0.05:6;
+%(a)
+[X,Y] = meshgrid(x,y);
+Z = exp(-0.08*(X.^2+ Y.^2)).*cos(3*X).*sin(2*Y);
+%(b)
+surf(X,Y,Z)
+title('6번 surf 그래프')
+xlabel('x')
+ylabel('y')
+zlabel('z')
+figure;
+%(c)
+contour(X,Y,Z,30)
+title('6번 contour 그래프')
+xlabel('x')
+ylabel('y')
+%(d)
+[Max, idx_max] = max(Z(:));
+[Min, idx_min] = min(Z(:));
+%(e)
+[row1, col1] = ind2sub(size(Z), idx_max);
+[row2, col2] = ind2sub(size(Z), idx_min);
+
+
+fprintf('최대값 위치: x = %.2f, y = %.2f\n', ...
+    X(row1, col1), Y(row1, col1));
+
+
+fprintf('최소값 위치: x = %.2f, y = %.2f\n', ...
+    X(row2, col2), Y(row2, col2));
+
+7번
+clear; clc;
+figure;
+n = [50, 100, 200, 400, 800, 1600];
+T = [14, 19, 30, 51, 92, 170];
+
+%(a)
+subplot(1, 3, 1);
+plot(n, T, 'o-');
+title('General Plot (plot)');
+grid on;
+%(b)
+subplot(1, 3, 2);
+semilogx(n, T, 'o-');
+title('Semi-log x Plot');
+grid on;
+%(c)~(d)
+subplot(1, 3, 3);
+semilogy(n, T, 'o-');
+title('Semi-log y Plot');
+(e) semilogx그래프가 가장 직선에 가깝다. 
+n이 일정한 비율로 증가하기 때문에 x축을 로그 스케일로 바꾸면 이러한 배수 증가가 등간격으로 표현되어, T의 증가 추세가 더 선형적으로 나타난다.
+
+8번
+clear; clc;
+figure;
+t = 0:0.01:24;
+%(a)
+P = 50+18*sin(pi*t/12)+6*cos(pi*t/4);
+plot(t, P)
+hold on;
+title('8번 그래프')
+%(b)
+[max_val, idx_max] = max(P);
+fprintf('최대 전력 사용량 : %.4f\n', max_val)
+%(c)
+fprintf('최대 전력 발생 시간 : %.4f\n', t(idx_max))
+%(d)
+[min_val, idx_min] = min(P);
+fprintf('최소 전력 사용량 : %.4f, 발생 시간 : %.4f\n', min_val, t(idx_min))
+%(e)
+plot(t(idx_max), max_val, 'ro', t(idx_min), min_val, 'bo')
+legend('P(t)', 'Max', 'Min')
+
+9번
+clear; clc;
+X = [1 3 0;2 5 1;4 8 3;7 12 5;11 17 9];
+%(a)
+x1 = X(:,1)
+x2 = X(:,2)
+x3 = X(:,3)
+%(b)
+theta_12 = acos(dot(x1,x2)/(norm(x1)*norm(x2)))*180/pi
+%(c)
+theta_13 = acos(dot(x1,x3)/(norm(x1)*norm(x3)))*180/pi
+theta_23 = acos(dot(x2,x3)/(norm(x2)*norm(x3)))*180/pi
+%(d)
+theta = [theta_12, theta_13, theta_23]
+%(e)
+[min_theta, idx_min] = min(theta);
+fprintf('가장 작은 각도 : %.4f\n', min_theta)
+if idx_min == 1
+    fprintf('가장 방향이 비슷한 두 센서 : 1번, 2번\n')
+elseif idx_min == 2
+    fprintf('가장 방향이 비슷한 두 센서 : 1번, 3번\n')
+else 
+    fprintf('가장 방향이 비슷한 두 센서 : 2번, 3번\n')
+end
+
+
+10번
+clear; clc;
+%(a)
+A = [9 -2 -1;-2 8 -3;-1 -3 10];
+b = [15;7;11];
+%(b)
+I = A\b
+%(c)
+det_A = det(A)
+if det_A ~= 0
+    disp('det(A)가 0이 아니므로 A는 가역행렬이다')
+else
+    disp('det(A)가 0이므로 A는 가역행렬이 아니다');
+end
+%(d)
+abs(I)
+%(e)
+[max_I, idx] = max(abs(I));
+fprintf('절대값이 가장 큰 전류 : %.4f, 전류번호 : %d번\n', I(idx), idx)
+
+
+11번
+clear; clc; 
+figure;
+t = 0:0.01:40;
+%(a)
+y = exp(-0.04*t).*(sin(4*t) + 0.6*sin(9*t));
+plot(t,y)
+title('11번 그래프')
+hold on
+%(b), (c)
+u = 1.6*exp(-0.04*t);
+l = -1.6*exp(-0.04*t);
+plot(t, u, 'r-', t, l, 'b-')
+legend('y(t)', 'u(t)', 'l(t)')
+figure;
+%(d)
+semilogy(t, abs(y))
+title('11번 semilogy 그래프')
+%(e)
+u_0 = 1.6 * exp(-0.04 * 0);
+u_40 = 1.6 * exp(-0.04 * 40);
+
+fprintf('t = 0일 때의 u(t) : %.4f\n', u_0);
+fprintf('t = 40일 때의 u(t) : %.4f\n', u_40);
+
+12번
+clear; clc;
+figure;
+epoch = [1,2,5,10,20,50,100,200];
+loss = [3.1, 2.4, 1.7, 1.2, 0.83, 0.36, 0.14, 0.06];
+%(a)
+plot(epoch, loss, 'o-')
+title('12번 그래프')
+figure;
+%(b)
+semilogy(epoch, loss, 'o-')
+title('12번 semilogy 그래프')
+%(c)
+r = loss(2:end)./ loss(1:end-1)
+%(d)
+r_mean = mean(r)
+%(e)
+if r_mean < 1
+    fprintf('평균 비율이 1보다 작으므로, loss가 전반적으로 감소')
+else
+    fprintf('평균 비율이 1보다 크거나 같으므로, loss가 전반적으로 감소한다고 보기 어렵다')
+end
+
