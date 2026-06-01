@@ -1,0 +1,253 @@
+1번
+rng(13);
+p = 0.35 + (0.95-0.35)*rand(1,40);
+answers = rand(5000,40) < p;
+scores = sum(answers, 2);
+avg_score = mean(scores);
+std_score = std(scores);
+max_score = max(scores);
+min_score = min(scores);
+
+fprintf('평균 점수 = %.2f\n',avg_score);
+fprintf('표준편차 = %.2f\n',std_score);
+fprintf('최고점 = %d\n',max_score);
+fprintf('최저점 = %d\n',min_score);
+
+figure;
+histogram(scores);
+xlabel('Score');
+ylabel('Number of Students');
+title('1번 Score Distribution');
+
+ratio = mean(scores >= avg_score);
+fprintf('평균 이상 학생 비율 = %.4f\n', ratio);
+
+2번
+weights = 100+ 4*randn(10000,20);
+box_mean = mean(weights,2);
+defect = (box_mean < 98) | (box_mean > 102);
+defect_ratio = mean(defect);
+fprintf('불합격률 = %.4f\n', defect_ratio);
+
+figure;
+histogram(box_mean);
+hold on;
+xline(98, 'r', 'LineWidth', 2);
+xline(102, 'r', 'LineWidth', 2);
+xlabel('Average Weight (g)');
+ylabel('Number of Boxes');
+title('2번 Box average weight distribution');
+legend('Boxes', '98g', '102g');
+
+3번
+N = randn(100000,1);
+S = 1.8 + N;
+detect = (S >= 1.2);
+success_rate = mean(detect);
+fprintf('감지 성공률 = %.4f\n', success_rate);
+
+figure;
+histogram(S);
+hold on;
+xline(1.2, 'r', 'LineWidth', 2);
+xlabel('Received Signal S');
+ylabel('Count');
+title('3번 Distribution of Received Signal');
+legend('S', '임계값 = 1.2');
+
+4번
+orders = mypoissrnd(180, 365, 1);
+
+daily_time = zeros(365, 1);
+
+
+for i = 1:365
+    t = 6 + 2 * randn(orders(i), 1);
+    
+    t(t < 0) = 0;
+    
+    daily_time(i) = sum(t);
+end
+
+
+over_day = (daily_time > 1200);
+over_ratio = mean(over_day);
+fprintf('1200분 초과 비율 = %.4f\n', over_ratio);
+
+figure;
+subplot(2,1,1);
+plot(orders, 'b-', 'LineWidth', 1);
+xlabel('Day');
+ylabel('Orders');
+title('Daily Orders');
+grid on;
+
+subplot(2,1,2);
+plot(daily_time, 'r-', 'LineWidth', 1);
+xlabel('Day');
+ylabel('Processing Time (min)');
+title('Daily Total Processing Time');
+grid on;
+
+
+figure;
+scatter(orders, daily_time, 'filled', 'MarkerFaceColor', [0 0.5 0.5]);
+xlabel('Number of Orders');
+ylabel('Total Processing Time (min)');
+title('Orders vs Processing Time');
+grid on;
+
+function r = mypoissrnd(lambda, m, n)
+    r = zeros(m, n);
+    for i = 1:m
+        for j = 1:n
+            L = exp(-lambda);
+            k = 0;
+            p = 1;
+
+            while p > L
+                k = k + 1;
+                p = p * rand;
+            end
+
+            r(i, j) = k - 1;
+        end
+    end
+end
+
+
+5번
+measurements =25 + 0.8*randn(10000, 30);
+avg_temp = mean(measurements , 2);
+success = (avg_temp >= 24.7) & (avg_temp <= 25.3);
+probability = mean(success);
+fprintf('확률 = %.4f\n', probability);
+single_sensor = measurements(:,1);        
+
+figure;                                   
+histogram(single_sensor);
+hold on;
+histogram(avg_temp);
+xlabel('Temperature');
+ylabel('Frequency');
+title('Single Sensor vs Average of 30 Sensors');
+legend('1 Sensor','Average of 30 Sensors');
+
+6번
+returns = 0.0008 + 0.015*randn(5000,60);
+asset = 100*cumprod(1+returns, 2);%누적곱
+final_asset = asset(:, 60);
+avg_asset = mean(final_asset);
+min_asset = min(final_asset);
+max_asset = max(final_asset);
+
+fprintf('평균 자산가치 = %.2f\n', avg_asset);
+fprintf('최소 자산가치 = %.2f\n', min_asset);
+fprintf('최대 자산가치 = %.2f\n', max_asset);
+
+p = mean(final_asset < 100);
+fprintf('100보다 작을 확률 = %.4f\n', p);
+figure;
+idx = randperm(5000, 30);%무작위 선택
+plot(asset(idx, :)');
+
+xlabel('Day');
+ylabel('Asset Value');
+
+7번
+arrival_interval = -8 * log(rand(300,1)); 
+
+arrival_time = cumsum(arrival_interval);
+
+service_time = 10 + 3*randn(300,1);    
+service_time(service_time < 0) = 1;
+
+start_time = zeros(300,1);             
+end_time = zeros(300,1);
+
+start_time(1) = arrival_time(1);
+end_time(1) = start_time(1) + service_time(1);
+
+for i = 2:300
+    start_time(i) = max(arrival_time(i), end_time(i-1));
+    end_time(i) = start_time(i) + service_time(i);
+end
+
+waiting_time = start_time - arrival_time;  
+avg_wait = mean(waiting_time);              
+max_wait = max(waiting_time);
+ratio = mean(waiting_time > 20);
+
+fprintf('평균 대기시간 = %.2f분\n', avg_wait);
+fprintf('최대 대기시간 = %.2f분\n', max_wait);
+fprintf('20분 초과 비율 = %.4f\n', ratio);
+
+figure;
+histogram(waiting_time);
+xlabel('Waiting Time (min)');
+ylabel('Number of Patients');
+title('Waiting Time Distribution');
+
+8번
+p = [0.72 0.81 0.67 0.90 0.76];
+r = rand(100000, 5);
+detect = r < p;
+num_detect = sum(detect,2);
+success = (num_detect >= 3);
+probability = mean(success);
+fprintf('시스템 감지 확률 = %.4f\n', probability);
+
+figure;                                 
+histogram(num_detect,'BinMethod','integers');
+xlabel('Number of Detected Modules');
+ylabel('Frequency');
+title('Detected Modules Distribution');
+
+9번
+stage1 = rand(50000,1) < 0.94;      
+stage2 = false(50000,1);           
+stage2(stage1) = rand(sum(stage1),1) < 0.91;
+
+stage3 = false(50000,1);          
+stage3(stage2) = rand(sum(stage2),1) < 0.88;
+
+final_pass = stage3;                
+pass_rate = mean(final_pass);
+
+fprintf('최종 합격률 = %.4f\n', pass_rate);
+
+fail1 = sum(~stage1);
+fail2 = sum(stage1 & ~stage2);
+fail3 = sum(stage2 & ~stage3);
+pass_final = sum(final_pass);
+
+figure;                            
+bar([fail1 fail2 fail3 pass_final]);
+
+xticks(1:4);
+xticklabels({'Fail 1','Fail 2','Fail 3','Pass'});
+ylabel('Number of Products');
+title('Inspection Results');
+
+10번
+server_load = 35 * randn(10000,1);     
+
+overload = rand(10000,1) < 0.12;       
+
+power_usage = 500 + server_load + 120*overload;  
+
+ratio = mean(power_usage > 650);      
+
+fprintf('650 초과 비율 = %.4f\n', ratio);
+
+avg_overload = mean(power_usage(overload));
+avg_normal = mean(power_usage(~overload));
+
+fprintf('과부하 발생일 평균 사용량 = %.2f\n', avg_overload);
+fprintf('비발생일 평균 사용량 = %.2f\n', avg_normal);
+
+figure;                               
+histogram(power_usage);
+xlabel('Power Usage');
+ylabel('Frequency');
+title('Power Usage Distribution');
